@@ -1,0 +1,140 @@
+{% extends "_base.html" %}
+
+{% block title %}
+    <title>K4W | Projects Page</title>
+{% endblock %}
+
+
+{% block content %}
+<body class="d-flex flex-column h-100 body-bg2">
+    <header>
+        <div class="container">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <a class="navbar-brand" href="{{  url_for('index')  }}">K4W</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{  url_for('index')  }}">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{  url_for('projects')  }}">Projects</a>
+                        </li>
+                        {% if 'login' not in session %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{  url_for('login')  }}">Login</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{  url_for('logout')  }}">Logout</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+            <!-- end of Navbar -->
+        </div>
+    </header>
+
+    
+
+    <main class="flex-shrink-0">
+        <div class="container">
+            <!-- flash message -->
+            {% with flash_messages = get_flashed_messages(True) %}
+            {% if flash_messages %}
+                {% for cat, msg in flash_messages %}
+                <div class="alert alert-{{ cat }} alert-dismissible fade show" role="alert">
+                    <strong>{{ msg }}!</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <!-- end of flash message -->
+
+            <div class="block-404">
+                <h2 class="display-3 text-center mb-3">My Projects</h2>
+            <div class="card-columns">
+                <div class="card">
+                    <img class="card-img-top img-fluid" src="https://source.unsplash.com/random/300x200" alt="">
+                    <div class="card-body">
+                        <h4 class="card-title">Card title that wraps to a new line</h4>
+                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content
+                            is a little bit longer.</p>
+                    </div>
+                </div>
+                <div class="card p-3">
+                    <blockquote>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                        <footer>
+                            <small>
+                                Someone famous in
+                                <cite title="Source Title">Source Title</cite>
+                            </small>
+                        </footer>
+                    </blockquote>
+                </div>
+                <div class="card">
+                    <img class="card-img-top" src="https://source.unsplash.com/random/301x200" alt="">
+                    <div class="card-body">
+                        <h4 class="card-title">Card title</h4>
+                        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                        <p class="card-text text-muted">
+                            <small>Last updated 3 mins ago</small>
+                        </p>
+                    </div>
+                </div>
+                <div class="card bg-dark text-white p-3">
+                    <blockquote class="card-bodyquote">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat.</p>
+                        <footer class="blockquote-footer">
+                            <small>
+                                Someone famous in
+                                <cite title="Source Title">Source Title</cite>
+                            </small>
+                        </footer>
+                    </blockquote>
+                </div>
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h4>Card title</h4>
+                        <p>This card has supporting text below as a natural lead-in to additional content.</p>
+                        <p>
+                            <small>Last updated 3 mins ago</small>
+                        </p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img class="card-img-top img-fluid" src="https://source.unsplash.com/random/302x200" alt="">
+                </div>
+                <div class="card text-right">
+                    <blockquote class="card-bodyquote">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                        <footer class="blockquote-footer">
+                            <small>
+                                Someone famous in
+                                <cite title="Source Title">Source Title</cite>
+                            </small>
+                        </footer>
+                    </blockquote>
+                </div>
+                <div class="card border-danger">
+                    <div class="card-body">
+                        <h4 class="card-title">Card title</h4>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card
+                            has even longer content than the first to show that equal height action.</p>
+                        <p class="text-muted">
+                            <small>Last updated 3 mins ago</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+{% endblock %}
