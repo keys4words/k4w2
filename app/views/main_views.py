@@ -39,12 +39,6 @@ def project(id):
 def logout():
     return redirect(url_for('main.index'))
 
-
-@main_blueprint.errorhandler(404)
-def pageNotFound(error):
-    return render_template('404.html'), 404
-
-
 # The User page is accessible to authenticated users (users that have logged in)
 @main_blueprint.route('/member')
 @login_required  # Limits access to authenticated users

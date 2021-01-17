@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_user import UserManager
@@ -45,6 +45,10 @@ def create_app(extra_config_settings={}):
         return isinstance(field, HiddenField)
 
     app.jinja_env.globals['bootstrap_is_hidden_field'] = is_hidden_field_filter
+
+    @app.errorhandler(404)
+    def pageNotFound(error):
+        return render_template('404.html'), 404
 
     # Setup Flask-User to handle user account related forms
     from .models.user_models import User
