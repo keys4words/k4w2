@@ -24,6 +24,10 @@ p.subheader {
     color: #aaa;
 }
 
+.container {
+    color: #fff;
+}
+
 .container .index-block{
     margin-top: 30%;
 }
