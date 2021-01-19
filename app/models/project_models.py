@@ -1,5 +1,4 @@
 from flask_user import UserMixin
-# from flask_user.forms import RegisterForm
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, validators
 from app import db

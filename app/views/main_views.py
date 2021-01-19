@@ -3,7 +3,7 @@ from flask import request, url_for
 from flask_user import current_user, login_required, roles_required
 
 from app import db
-from app.models.user_models import UserProfileForm
+
 
 main_blueprint = Blueprint('main', __name__, template_folder='templates')
 
@@ -53,22 +53,20 @@ def admin_page():
     return render_template('main/admin_page.html')
 
 
-@main_blueprint.route('/main/profile', methods=['GET', 'POST'])
+@main_blueprint.route('/main/profile')
 @login_required
 def user_profile_page():
-    # Initialize form
-    form = UserProfileForm(request.form, obj=current_user)
 
     # Process valid POST
-    if request.method == 'POST' and form.validate():
-        # Copy form fields to user_profile fields
-        form.populate_obj(current_user)
+    # if request.method == 'POST' and form.validate():
+    #     # Copy form fields to user_profile fields
+    #     form.populate_obj(current_user)
 
-        # Save user_profile
-        db.session.commit()
+    #     # Save user_profile
+    #     db.session.commit()
 
-        # Redirect to home page
-        return redirect(url_for('main.home_page'))
+    #     # Redirect to home page
+    #     return redirect(url_for('main.home_page'))
 
     # Process GET or invalid POST
     return render_template('main/user_profile_page.html',

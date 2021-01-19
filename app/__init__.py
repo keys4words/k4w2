@@ -8,57 +8,37 @@ from flask_user import UserManager
 from flask_wtf.csrf import CSRFProtect
 
 
-# Instantiate Flask extensions
 csrf_protect = CSRFProtect()
 db = SQLAlchemy()
 migrate = Migrate()
 
-# Initialize Flask Application
-def create_app(extra_config_settings={}):
-    """Create a Flask application.
-    """
-    # Instantiate Flask
-    app = Flask(__name__)
+app = Flask(__name__)
+app.config.from_pyfile('config.cfg')
 
-    # Load common settings
-    app.config.from_pyfile('config.cfg')
+db.init_app(app)
+migrate.init_app(app, db)
+csrf_protect.init_app(app)
 
-    app.config.update(extra_config_settings)
 
-    # Setup Flask-SQLAlchemy
-    db.init_app(app)
+# Register blueprints
+from .views import register_blueprints
+register_blueprints(app)
 
-    # Setup Flask-Migrate
-    migrate.init_app(app, db)
+# Define bootstrap_is_hidden_field for flask-bootstrap's bootstrap_wtf.html
+from wtforms.fields import HiddenField
 
-    # Setup WTForms CSRFProtect
-    csrf_protect.init_app(app)
+def is_hidden_field_filter(field):
+    return isinstance(field, HiddenField)
 
-    # Register blueprints
-    from .views import register_blueprints
-    register_blueprints(app)
+app.jinja_env.globals['bootstrap_is_hidden_field'] = is_hidden_field_filter
 
-    # Define bootstrap_is_hidden_field for flask-bootstrap's bootstrap_wtf.html
-    from wtforms.fields import HiddenField
 
-    def is_hidden_field_filter(field):
-        return isinstance(field, HiddenField)
+@app.errorhandler(404)
+def pageNotFound(error):
+    return render_template('404.html'), 404
 
-    app.jinja_env.globals['bootstrap_is_hidden_field'] = is_hidden_field_filter
+from .models.user_models import User
+from .models.project_models import Project
+from .views.main_views import user_profile_page
 
-    @app.errorhandler(404)
-    def pageNotFound(error):
-        return render_template('404.html'), 404
-
-    # Setup Flask-User to handle user account related forms
-    from .models.user_models import User
-    from .views.main_views import user_profile_page
-
-    # Setup Flask-User
-    user_manager = UserManager(app, db, User)
-
-    @app.context_processor
-    def context_processor():
-        return dict(user_manager=user_manager)
-
-    return app
+user_manager = UserManager(app, db, User)
