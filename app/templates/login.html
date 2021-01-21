@@ -59,14 +59,17 @@
             <!-- end of flash message -->
             <div class="block-404 w-50 mx-auto">
                 <h2 class="display-3 text-center mb-3">Login page</h2>
-                <form>
+                <form action="" method="POST" class="form" role="form">
+                    {{ form.hidden_tag() }}
                     <div class="mb-2">
                       <label for="login" class="form-label">Your login</label>
-                      <input type="text" class="form-control">
+                      <!-- <input type="text" class="form-control"> -->
+                      {{ form.username(class_='form-control') }}
                     </div>
                     <div class="mb-2">
                       <label for="pass" class="form-label">Your Password</label>
-                      <input type="password" class="form-control">
+                      <!-- <input type="password" class="form-control"> -->
+                      {{ form.password(class_='form-control') }}
                     </div>
                     
                     <button type="submit" class="btn btn-outline-light btn-block mt-5">Login</button>

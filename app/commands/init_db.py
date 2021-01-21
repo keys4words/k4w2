@@ -33,35 +33,32 @@ def create_users():
     db.create_all()
 
     # Adding roles
-    admin_role = find_or_create_role('admin', u'Admin')
+    admin_role = find_or_create_role('admin')
 
     # Add users
-    user = find_or_create_user(u'Admin', u'Example', u'admin@example.com', 'Password1', admin_role)
-    user = find_or_create_user(u'Member', u'Example', u'member@example.com', 'Password1')
+    user = find_or_create_user(u'admin', 'secret', admin_role)
+    user = find_or_create_user(u'guest', 'Password1')
 
     # Save to DB
     db.session.commit()
 
 
-def find_or_create_role(name, label):
+def find_or_create_role(name):
     """ Find existing role or create new role """
     role = Role.query.filter(Role.name == name).first()
     if not role:
-        role = Role(name=name, label=label)
+        role = Role(name=name)
         db.session.add(role)
     return role
 
 
-def find_or_create_user(first_name, last_name, email, password, role=None):
+def find_or_create_user(login, password, role=None):
     """ Find existing user or create new user """
-    user = User.query.filter(User.email == email).first()
+    user = User.query.filter(User.login == login).first()
     if not user:
-        user = User(email=email,
-                    first_name=first_name,
-                    last_name=last_name,
+        user = User(login=login,
                     password=current_app.user_manager.password_manager.hash_password(password),
-                    active=True,
-                    email_confirmed_at=datetime.datetime.utcnow())
+                    active=True)
         if role:
             user.roles.append(role)
         db.session.add(user)
