@@ -1,8 +1,8 @@
-from flask import Blueprint, redirect, render_template
-from flask import request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for
 from flask_user import current_user, login_required, roles_required
+from flask_user.forms import LoginForm
 
-from app import db
+from app import db, user_manager
 
 
 main_blueprint = Blueprint('main', __name__, template_folder='templates')
@@ -14,12 +14,11 @@ def index():
     return render_template('index.html')
 
 
-@main_blueprint.route('/login')
+@main_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        login = request.form.get('login')
-        password = request.form.get('password')
-        
+    form = LoginForm()
+    if form.validate_on_submit():
+        return redirect(url_for('index'))
     return render_template('login.html')
 
 
