@@ -1,8 +1,4 @@
-from flask_user import UserMixin
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, validators
 from app import db
-
 
 
 class Project(db.Model):
