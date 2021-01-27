@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, url_for, session
+from flask import Blueprint, redirect, render_template, request, url_for, session, flash
 from flask_login import LoginManager, current_user, login_required, login_user
 from flask_sqlalchemy import SQLAlchemy
 from app import db, login_manager
@@ -24,21 +24,23 @@ def index():
 @main_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        user = User.query.filter_by(username=request.form['username']).first()
+        user = User.query.filter_by(username=request.form['login']).first()
+        
         if not user:
-            return 'There is NO user with this username!'
+            flash('There is NO user with this login!')
+            return render_template('login.html')
+        
+        flash('You are successfully logged in!')
         login_user(user, remember=True)
+
         if 'next' in session:
             next = session['next']
-            
-            if is_safe_url(next) and next is not None:
-                return redirect(next)
-
-        return 'You are successfully logged in!'
-    
-    session['next'] = request.args.get('next')
+        if is_safe_url(next) and next is not None:
+            return redirect(next)
     return render_template('login.html')
-
+    
+    # session['next'] = request.args.get('next')
+    # return render_template('login.html')
 
 @main_blueprint.route('/projects')
 def projects():
@@ -55,9 +57,15 @@ def project(id):
 @login_required
 def logout():
     logout_user()
+    flash('There is NO user with this username!')
     return redirect(url_for('main.index'))
 
 
 @main_blueprint.route('/admin')
+@login_required
 def admin_page():
-    return render_template('main/admin_page.html')
+    if current_user.role == 'admin':
+        flash('Welcome, admin')
+        return render_template('main/admin_page.html')
+    flash('You need to have Admin priveledges!')
+    return redirect(url_for('login'))

@@ -1,15 +1,14 @@
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash
 from app import db
 
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-
     login = db.Column(db.Unicode(50), nullable=False, server_default=u'')
     password = db.Column(db.String(255), nullable=False, server_default='')
     active = db.Column(db.Boolean(), nullable=False, server_default='0')
-
     roles = db.relationship('Role', secondary='users_roles',
                             backref=db.backref('users', lazy='dynamic'))
 
