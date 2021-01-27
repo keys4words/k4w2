@@ -6,17 +6,20 @@ from app import db
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    login = db.Column(db.Unicode(50), nullable=False, server_default=u'')
-    password = db.Column(db.String(255), nullable=False, server_default='')
+    login = db.Column(db.Unicode(50), nullable=False, unique=True)
+    password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean(), nullable=False, server_default='0')
     roles = db.relationship('Role', secondary='users_roles',
                             backref=db.backref('users', lazy='dynamic'))
+
+    def __repr__(self):
+        return f"<User {self.login}>"
 
 
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(50), nullable=False, server_default=u'', unique=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
 
 
 class UsersRoles(db.Model):
