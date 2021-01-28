@@ -43,22 +43,23 @@
 
     <main class="flex-shrink-0">
         <div class="container">
-            <!-- flash message -->
-            {% with flash_messages = get_flashed_messages(True) %}
-            {% if flash_messages %}
-                {% for msg in flash_messages %}
-                <div class="alert alert-dismissible fade show bg-light text-danger" role="alert">
-                    <strong>{{ msg }}!</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <!-- end of flash message -->
+            
             <div class="block-404 w-50 mx-auto">
                 <h2 class="display-3 text-center mb-3">Login page</h2>
+                <!-- flash message -->
+                {% with flash_messages = get_flashed_messages(True) %}
+                {% if flash_messages %}
+                    {% for cat, msg in flash_messages %}
+                    <div class="alert alert-dismissible fade show bg-light text-danger text-center" role="alert">
+                        <strong>{{ msg }}!</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+                <!-- end of flash message -->
                 <form action="" method="POST" class="form" role="form">
                     <div class="mb-2">
                       <label for="login" class="form-label">Your login</label>

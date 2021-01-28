@@ -1,8 +1,9 @@
 from flask import Blueprint, redirect, render_template, request, url_for, session, flash
 from flask_login import LoginManager, current_user, login_required, login_user
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import check_password_hash
 from app import app, db, login_manager
-
+from app.models import User
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -26,23 +27,26 @@ def pageNotFound(error):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        user = User.query.filter_by(username=request.form['login']).first()
-        
-        if not user:
-            flash('There is NO user with this login!')
-            return render_template('login.html')
-        
-        flash('You are successfully logged in!')
-        login_user(user, remember=True)
-
-        if 'next' in session:
-            next = session['next']
-        if is_safe_url(next) and next is not None:
-            return redirect(next)
+        login = request.form.get('login')
+        password = request.form.get('password')
+        if login and password:
+            user = User.query.filter_by(login=request.form['login']).first()
+            if user and check_password_hash(user.password, password):
+                flash('You are successfully logged in!')
+                login_user(user, remember=True)
+                next_page = request.args.get('next')
+                if next_page:
+                    return redirect(next_page)
+                return redirect(url_for('index'))
+            else:
+                flash('Wrong password!')
+            if not user:
+                flash('There is NO user with this login!')
+                return render_template('login.html')
+        else:
+            flash('Please fill login and password')
     return render_template('login.html')
     
-    # session['next'] = request.args.get('next')
-    # return render_template('login.html')
 
 @app.route('/projects')
 def projects():
