@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -10,14 +10,6 @@ login_manager = LoginManager(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+from app import models, views, forms
 
-@app.errorhandler(404)
-def pageNotFound(error):
-    return render_template('404.html'), 404
-
-
-from .views import register_blueprints
-register_blueprints(app)
-
-from .models.user_models import User
-from .models.project_models import Project
+# db.create_all()
