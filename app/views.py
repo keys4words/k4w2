@@ -31,20 +31,22 @@ def login():
         password = request.form.get('password')
         if login and password:
             user = User.query.filter_by(login=request.form['login']).first()
-            if user and check_password_hash(user.password, password):
-                flash('You are successfully logged in!')
-                login_user(user, remember=True)
-                next_page = request.args.get('next')
-                if next_page:
-                    return redirect(next_page)
-                return redirect(url_for('index'))
+            if user:
+                if check_password_hash(user.password, password):
+                    flash('You are successfully logged in!')
+                    login_user(user, remember=True)
+                   
+                    next_page = request.args.get('next')
+                    if next_page:
+                        return redirect(next_page)
+                    return redirect(url_for('index'))
+                else:
+                    flash('Wrong password!')
             else:
-                flash('Wrong password!')
-            if not user:
                 flash('There is NO user with this login!')
                 return render_template('login.html')
         else:
-            flash('Please fill login and password')
+            flash('Please fill in login and password')
     return render_template('login.html')
     
 
