@@ -112,6 +112,13 @@ class TypeWriter {
   }
 }
 
+$(document).ready(function() {
+  // show the alert
+  setTimeout(function() {
+      $(".alert").alert('close');
+  }, 2000);
+});
+
 // init on DOM loaded
 document.addEventListener("DOMContentLoaded", init);
 
@@ -122,3 +129,4 @@ function init() {
   const wait = txtElement.getAttribute("data-wait");
   new TypeWriter(txtElement, words, wait);
 }
+

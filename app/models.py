@@ -66,6 +66,7 @@ class Project(db.Model):
 
 
 def seed_db(db):
+    db.create_all()
     admin_role = Role('admin')
     guest_role = Role('guest')
     db.session.add_all([admin_role, guest_role])

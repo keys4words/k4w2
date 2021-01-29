@@ -33,20 +33,20 @@ def login():
             user = User.query.filter_by(login=request.form['login']).first()
             if user:
                 if check_password_hash(user.password, password):
-                    flash('You are successfully logged in!')
+                    flash('You are successfully log in!', category='info')
                     login_user(user, remember=True)
                    
                     next_page = request.args.get('next')
                     if next_page:
                         return redirect(next_page)
-                    return redirect(url_for('index'))
+                    return redirect(url_for('projects'))
                 else:
-                    flash('Wrong password!')
+                    flash('Wrong password!', category='danger')
             else:
-                flash('There is NO user with this login!')
+                flash('There is NO user with this login!', category='danger')
                 return render_template('login.html')
         else:
-            flash('Please fill in login and password')
+            flash('Please fill in login and password', category='danger')
     return render_template('login.html')
     
 
@@ -65,15 +65,15 @@ def project(id):
 @login_required
 def logout():
     logout_user()
-    flash('There is NO user with this username!')
-    return redirect(url_for('main.index'))
+    flash('You logged out!', category='info')
+    return redirect(url_for('index'))
 
 
 @app.route('/admin')
 @login_required
 def admin_page():
     if current_user.role == 'admin':
-        flash('Welcome, admin')
+        flash('Welcome, admin', category='info')
         return render_template('main/admin_page.html')
-    flash('You need to have Admin priveledges!')
+    flash('You need to have Admin priveledges!', category='danger')
     return redirect(url_for('login'))

@@ -35,14 +35,12 @@
                 </div>
             </nav>
             <!-- end of Navbar -->
-        </div>
-    </header>
-
-    <!-- flash message -->
-    {% with flash_messages = get_flashed_messages(True) %}
+            
+            <!-- flash message -->
+            {% with flash_messages = get_flashed_messages(True) %}
             {% if flash_messages %}
-                {% for msg in flash_messages %}
-                <div class="alert alert-dismissible fade show bg-light text-danger" role="alert">
+                {% for cat, msg in flash_messages %}
+                <div class="alert alert-{{ cat }} alert-dismissible fade show bg-light" role="alert">
                     <strong>{{ msg }}!</strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -51,7 +49,11 @@
                 {% endfor %}
             {% endif %}
             {% endwith %}
-    <!-- end of flash message -->
+            <!-- end of flash message -->
+        </div>
+    </header>
+
+    
 
     <main class="flex-shrink-0">
         <div class="container">
