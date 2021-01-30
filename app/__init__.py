@@ -10,4 +10,4 @@ login_manager = LoginManager(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from app import models, views, forms
+from app import models, views

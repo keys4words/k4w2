@@ -82,6 +82,10 @@ social a:hover > img{
     margin-right: 0px;
 }
 
+.card-body {
+    color: black;
+}
+
 /* Cursor */
 .txt-type>.txt {
     border-right: 0.2rem solid #777;

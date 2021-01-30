@@ -48,14 +48,19 @@ class UsersRoles(db.Model):
 class Project(db.Model):
     __tablename__ = 'project'
     id = db.Column(db.Integer(), primary_key=True)
+    pr_img = db.Column(db.String(255))
     name = db.Column(db.String(50), nullable=False, server_default=u'', unique=True)
     short_desc = db.Column(db.String(255), nullable=False, server_default=u'')
     long_desc = db.Column(db.Text, nullable=False, server_default=u'')
     live_anchor = db.Column(db.String(150), nullable=False, server_default=u'', unique=True)
     github_anchor = db.Column(db.String(150), nullable=False, server_default=u'', unique=True)
 
-    def __init__(self, name, short_desc, long_desc, live_anchor, github_anchor):
+    def __init__(self, name, pr_img, short_desc, long_desc, live_anchor, github_anchor):
         self.name = name
+        if pr_img:
+            self.pr_img = pr_img
+        else:
+            self.pr_img = 'https://source.unsplash.com/random/301x200'
         self.short_desc = short_desc
         self.long_desc = long_desc
         self.live_anchor = live_anchor
@@ -84,5 +89,59 @@ def seed_db(db):
     db.session.add_all([admin_role_assign, guest_role_assign])
     db.session.commit()
 
+    pr1 = Project('FAQ App', None, 'Simple flask web-app with authorization - for answer-question logic. Postgress + pure flask without any extensions. 3 level of users: admin, experts and users.',
+     '''Simple flask web-app with authorization - for answer-question logic. Postgress + pure flask without any extensions. 3 level of users: admin, experts and users.
+
+    Users are able ask questions to definite experts after registration. There 3 users with names: user, user2, user3 and the same passwords = ‘test’.
+
+    Experts are able answer appropriate questions after approving their expert status by admin.
+    There are 2 experts with names: expert, expert2 and same passwords = ‘test’.
+
+    Admin see all users and may approve expert status for definite expert.
+    ''', 'https://nameless-woodland-28899.herokuapp.com/', 'https://github.com/keys4words/faq.git')
+
+    pr2 = Project('Real estate App', None, 'Django ecomm web-service for real estate','lorem ipsum','', '')
+    pr3 = Project('Flask Landing', None, 'Flask landing page with signup form',
+     '''Landing page with signup form - to get subscribers.
+        Stack - flask + sqlite3 + email-extension.
+     ''', 'https://my-looplab.herokuapp.com/', 'https://github.com/keys4words/looplab.git')
+    pr4 = Project('Flask API', None, 'Flask API with auth - GET/POST/PUT/PATCH/DELETE support',
+     '''Create app on base sqlite db with base authorization (username=’admin’, password=’admin’). 
+        See all users = GET http://keys4.pythonanywhere.com/member
+        Add new user = POST http://keys4.pythonanywhere.com/member need json object kinda
+        {
+            "name": "john dow",
+            "email": "j.dow@mail.com",
+            "level": "Bronze"
+        }
+        See user  = GET http://keys4.pythonanywhere.com/member/<id>
+        Return json kinda
+        {
+            "member": {
+                "email": "s.connor@mail.com",
+                "id": 2,
+                "level": "Silver",
+                "name": "Sara Connor"
+            }
+        }
+        Update user = PUT, PATCH http://keys4.pythonanywhere.com/member/<id>
+        Return refreshed json kinda
+        {
+            "member": {
+                "email": "s.connor@mail.com",
+                "id": 2,
+                "level": "Silver",
+                "name": "Sara Connor"
+            }
+        }
+        Delete user = DELETE http://keys4.pythonanywhere.com/member/<id>
+        Return json kinda
+        {
+            "message": “The member has been deleted!”
+        }
+    ''', 'http://keys4.pythonanywhere.com/', 'https://github.com/keys4words/flaskApi.git')
+
+    db.session.add_all([pr1, pr2, pr3, pr4])
+    db.session.commit()
 
 

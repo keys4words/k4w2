@@ -3,7 +3,7 @@ from flask_login import LoginManager, current_user, login_required, login_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
 from app import app, db, login_manager
-from app.models import User
+from app.models import User, Project
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -52,7 +52,8 @@ def login():
 
 @app.route('/projects')
 def projects():
-    return render_template('projects.html')
+    projects = Project.query.all()
+    return render_template('projects.html', projects=projects)
 
 
 @app.route('/projects/<int:id>')

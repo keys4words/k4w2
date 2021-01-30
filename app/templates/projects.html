@@ -58,9 +58,10 @@
             {% endwith %}
             <!-- end of flash message -->
 
+            <!-- {{ url_for('static', filename='img/style.css') }} -->
             <div class="block-404">
                 <h2 class="display-3 text-center mb-3">My Projects</h2>
-            <div class="card-columns">
+                <div class="card-columns">
                 <div class="card">
                     <img class="card-img-top img-fluid" src="https://source.unsplash.com/random/300x200" alt="">
                     <div class="card-body">
@@ -134,7 +135,20 @@
                         </p>
                     </div>
                 </div>
+                <!-- get projects from db -->
+                {% for project in projects %}
+                <div class="card">
+                    <img class="card-img-top" src="{{ project.pr_img }}" alt="">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ project.name }}</h4>
+                        <p class="card-text">{{ project.short_desc }}</p>
+                        <p class="card-text text-muted">
+                            <small>Last updated 3 mins ago</small>
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            </div>
+        </div>
 
 {% endblock %}
