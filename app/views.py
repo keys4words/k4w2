@@ -59,6 +59,7 @@ def projects():
 @app.route('/projects/<int:id>')
 @login_required
 def project(id):
+    
     return str(id)
 
 
