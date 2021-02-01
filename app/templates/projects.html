@@ -62,7 +62,6 @@
             {% endwith %}
             <!-- end of flash message -->
 
-            <!-- {{ url_for('static', filename='img/style.css') }} -->
             <div class="block-404">
                 <h2 class="display-3 text-center mb-3">My Projects</h2>
                 
@@ -70,7 +69,7 @@
                     <!-- get projects from db -->
                     {% for project in projects %}
                     <div class="card">
-                        <img class="card-img-top" src="{{ project.pr_img }}" alt="">
+                        <img class="card-img-top" src="{{ url_for('static', filename=project.pr_img) }}" alt="">
                         <div class="card-body">
                             <h4 class="card-title">{{ project.name }}</h4>
                             <p class="card-text">{{ project.short_desc }}</p>
