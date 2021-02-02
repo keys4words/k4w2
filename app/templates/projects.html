@@ -69,7 +69,7 @@
                     <!-- get projects from db -->
                     {% for project in projects %}
                     <div class="card">
-                        <img class="card-img-top" src="{{ url_for('static', filename=project.pr_img) }}" alt="">
+                        <img class="card-img-top" src="{{ url_for('static', filename='img/small/'+project.pr_img) }}" alt="">
                         <div class="card-body">
                             <h4 class="card-title">{{ project.name }}</h4>
                             <p class="card-text">{{ project.short_desc }}</p>

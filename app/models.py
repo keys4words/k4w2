@@ -30,7 +30,7 @@ class Role(db.Model):
         self.name = name
 
     def __repr__(self):
-        return f'<{self.name}>'
+        return f'{self.name}'
 
 
 class UsersRoles(db.Model):
@@ -42,7 +42,6 @@ class UsersRoles(db.Model):
     def __init__(self, user_id, role_id):
         self.user_id = user_id
         self.role_id = role_id
-
 
 
 class Project(db.Model):
@@ -58,10 +57,7 @@ class Project(db.Model):
 
     def __init__(self, name, pr_img, short_desc, stack, long_desc, live_anchor, github_anchor):
         self.name = name
-        if pr_img:
-            self.pr_img = pr_img
-        else:
-            self.pr_img = 'https://source.unsplash.com/random/301x200'
+        self.pr_img = pr_img
         self.short_desc = short_desc
         self.stack = stack
         self.long_desc = long_desc
@@ -91,7 +87,7 @@ def seed_db(db):
     db.session.add_all([admin_role_assign, guest_role_assign])
     db.session.commit()
 
-    pr1 = Project('FAQ App', None, 'Simple flask web-app with authorization - for answer-question logic. Postgress + pure flask without any extensions. 3 level of users: admin, experts and users.',
+    pr1 = Project('FAQ App', 'pr1.jpg', 'Simple flask web-app with authorization - for answer-question logic.\nPostgress + pure flask without any extensions.\n 3 level of users: admin, experts and users.',
     'Flask + postgres',
      '''Simple flask web-app with authorization - for answer-question logic. Postgress + pure flask without any extensions. 3 level of users: admin, experts and users.
 
@@ -103,12 +99,12 @@ def seed_db(db):
     Admin see all users and may approve expert status for definite expert.
     ''', 'https://nameless-woodland-28899.herokuapp.com/', 'https://github.com/keys4words/faq.git')
 
-    pr2 = Project('Pulse', None, 'Ecom', 'HTML5+CSS+js+PHP', '', '', 'https://github.com/keys4words/pulse')
-    pr3 = Project('Real estate App', None, 'Django ecomm web-service for real estate','Django','lorem ipsum','', '')
-    pr4 = Project('Flask Landing', None, 'Flask landing page with signup form', 'Flask + sqlite3 + email-extension',
+    pr2 = Project('Pulse', 'pr2.jpg', 'Ecom', 'HTML5+CSS+js+PHP', '', '', 'https://github.com/keys4words/pulse')
+    pr3 = Project('Real estate App', 'pr3.jpg', 'Django ecomm web-service for real estate','Django','lorem ipsum','', '')
+    pr4 = Project('Flask Landing', 'pr4.jpg', 'Flask landing page with signup form', 'Flask + sqlite3 + email-extension',
      '''Landing page with signup form - to get subscribers.
      ''', 'https://my-looplab.herokuapp.com/', 'https://github.com/keys4words/looplab.git')
-    pr5 = Project('Flask API', None, 'Flask API with auth - GET/POST/PUT/PATCH/DELETE support', 'Flask',
+    pr5 = Project('Flask API', 'pr5.jpg', 'Flask API with auth - GET/POST/PUT/PATCH/DELETE support', 'Flask',
      '''Create app on base sqlite db with base authorization (username=’admin’, password=’admin’). 
         See all users = GET http://keys4.pythonanywhere.com/member
         Add new user = POST http://keys4.pythonanywhere.com/member need json object kinda
@@ -144,7 +140,7 @@ def seed_db(db):
         }
     ''', 'http://keys4.pythonanywhere.com/', 'https://github.com/keys4words/flaskApi.git')
 
-    pr6 = Project('Tender scraping', None, 'Bunch of web-scrapers government tenders', 'Python', '', '', 'https://github.com/keys4words/tenders')
+    pr6 = Project('Tender scraping', 'pr6.jpg', 'Bunch of web-scrapers government tenders', 'Python', '', '', 'https://github.com/keys4words/tenders')
 
     db.session.add_all([pr1, pr2, pr3, pr4, pr5, pr6])
     db.session.commit()

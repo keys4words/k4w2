@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, render_template, request, url_for, session, flash
-from flask_login import LoginManager, current_user, login_required, login_user
+from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
 from app import app, db, login_manager
@@ -59,8 +59,8 @@ def projects():
 @app.route('/projects/<int:id>')
 @login_required
 def project(id):
-    
-    return str(id)
+    project = Project.query.filter_by(id=id).first()
+    return render_template('project.html', project=project)
 
 
 @app.route('/logout')
@@ -74,8 +74,8 @@ def logout():
 @app.route('/admin')
 @login_required
 def admin_page():
-    if current_user.role == 'admin':
+    if current_user.roles[0] == 'admin':
         flash('Welcome, admin', category='info')
-        return render_template('main/admin_page.html')
+        return render_template('admin_page.html')
     flash('You need to have Admin priveledges!', category='danger')
     return redirect(url_for('login'))
