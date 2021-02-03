@@ -23,13 +23,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{  url_for('projects')  }}">Projects</a>
                         </li>
-                        {% if 'login' not in session %}
+                        {% if current_user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{  url_for('login')  }}">Login</a>
+                            <a class="nav-link" href="{{  url_for('logout')  }}">Logout</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{  url_for('logout')  }}">Logout</a>
+                            <a class="nav-link" href="{{  url_for('login')  }}">Login</a>
                         </li>
                         {% endif %}
                     </ul>
@@ -48,17 +48,17 @@
                 <h2 class="display-3 text-center mb-3">{{ project.name }}</h2>
                 <!-- flash message -->
                 {% with flash_messages = get_flashed_messages(True) %}
-                {% if flash_messages %}
-                    {% for cat, msg in flash_messages %}
-                    <div class="alert alert-{{ cat }} alert-dismissible fade show bg-light text-center" role="alert">
-                        <strong>{{ msg }}!</strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    {% endfor %}
-                {% endif %}
-                {% endwith %}
+            {% if flash_messages %}
+                {% for cat, msg in flash_messages %}
+                <div class="alert alert-{{ cat }} alert-dismissible fade show bg-light" role="alert">
+                    <strong>{{ msg }}!</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
                 <!-- end of flash message -->
                 <img class="my-4 single_post" src="{{ url_for('static', filename='img/big/' + project.pr_img) }}">
                 <p class="text-muted">Stack: {{ project.stack }} </p>

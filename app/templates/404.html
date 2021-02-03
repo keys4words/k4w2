@@ -23,13 +23,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{  url_for('projects')  }}">Projects</a>
                         </li>
-                        {% if 'login' not in session %}
+                        {% if current_user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{  url_for('login')  }}">Login</a>
+                            <a class="nav-link" href="{{  url_for('logout')  }}">Logout</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{  url_for('logout')  }}">Logout</a>
+                            <a class="nav-link" href="{{  url_for('login')  }}">Login</a>
                         </li>
                         {% endif %}
                     </ul>
@@ -43,7 +43,7 @@
     {% with flash_messages = get_flashed_messages(True) %}
             {% if flash_messages %}
                 {% for cat, msg in flash_messages %}
-                <div class="alert alert-{{ cat }} alert-dismissible fade show bg-light text-center" role="alert">
+                <div class="alert alert-{{ cat }} alert-dismissible fade show bg-light" role="alert">
                     <strong>{{ msg }}!</strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

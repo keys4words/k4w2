@@ -82,8 +82,16 @@ social a:hover > img{
     margin-right: 0px;
 }
 
+.card-header {
+    color:#212529;
+}
+
 .card-body {
     color: black;
+}
+
+.table td, .table th {
+    vertical-align: middle;
 }
 
 /* Cursor */

@@ -5,6 +5,7 @@ from werkzeug.security import check_password_hash
 from app import app, db, login_manager
 from app.models import User, Project
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -13,6 +14,7 @@ def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
 
 @app.route('/')
 def index():
@@ -74,8 +76,9 @@ def logout():
 @app.route('/admin')
 @login_required
 def admin_page():
-    if current_user.roles[0] == 'admin':
+    if current_user.roles[0].name == 'admin':
         flash('Welcome, admin', category='info')
-        return render_template('admin_page.html')
+        projects = Project.query.all()
+        return render_template('admin_page.html', projects=projects)
     flash('You need to have Admin priveledges!', category='danger')
     return redirect(url_for('login'))
