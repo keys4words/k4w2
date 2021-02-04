@@ -1,3 +1,5 @@
+from functools import wraps
+
 from flask import Blueprint, redirect, render_template, request, url_for, session, flash
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
@@ -9,6 +11,17 @@ from app.models import User, Project
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+def superuser(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.roles[0].name != 'admin'::
+            flash('You need to have Admin priveledges!', category='danger')
+            redirect(url_for('login'))
+        return f(*args, **kwargs)
+
+    return decorated_function
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
@@ -80,5 +93,16 @@ def admin_page():
         flash('Welcome, admin', category='info')
         projects = Project.query.all()
         return render_template('admin_page.html', projects=projects)
+    flash('You need to have Admin priveledges!', category='danger')
+    return redirect(url_for('login'))
+
+
+
+@app.route('/admin/add')
+@login_required
+def admin_add_project():
+    if current_user.roles[0].name == 'admin':
+        return render_template('add_project.html')
+
     flash('You need to have Admin priveledges!', category='danger')
     return redirect(url_for('login'))
