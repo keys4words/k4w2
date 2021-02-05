@@ -29,7 +29,7 @@
                         </li>
                         {% if current_user.is_authenticated %}
                         <li class="nav-item active">
-                          <a class="nav-link" href="{{  url_for('projects_list')  }}">Project List</a>
+                            <a class="nav-link" href="{{  url_for('projects_list')  }}">Project List</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{  url_for('logout')  }}">Logout</a>
@@ -68,57 +68,32 @@
                 <h2 class="display-3 text-center mb-3">Admin Page</h2>
                 <section id="categories">
                     <div class="container">
-                      <div class="row">
-                        <div class="col">
-                          <div class="card">
-                            <div class="card-header text-center ">
-                              <h4>Project List</h4>
-                            </div>
-                            <table class="table table-striped">
-                              <thead class="thead-dark">
-                                <tr>
-                                  <th>#</th>
-                                  <th>Name</th>
-                                  <th>Stack</th>
-                                  <th></th>
-                                  <th></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {% for project in projects %}
-                                <tr>
-                                  <td>{{ (project.id+1) }}</td>
-                                  <td>{{ project.name }}</td>
-                                  <td>{{ project.stack }}</td>
-                                  <td>
-                                    <a href="#" class="btn btn-secondary">
-                                      <i class="fas fa-pencil-alt mr-2"></i> Edit
-                                    </a>
-                                  </td>
-                                  <td>
-                                    <a href="#" class="btn btn-danger">
-                                      <i class="fas fa-trash mr-2"></i> Remove
-                                    </a>
-                                  </td>
-                                </tr>
-                                {% endfor %}
-                              </tbody>
-                            </table>
-                            <div class="px-4 my-3">
-                              <a href="{{ url_for('admin_add_project') }}" class="btn btn-success btn-block">
-                                <i class="fas fa-plus mr-2"></i> Add Project
-                              </a>
-                            </div>
-                            <!-- pagination -->
-                            <nav class="ml-4">
-                                <ul class="pagination">
-                                    <li class="page-item disabled">
-                                        <a href="#" class="page-link">Previous</a>
-                                    </li>
-                                    <li class="page-item active">
-                                        <a href="#" class="page-link">1</a>
-                                    </li>
-                                </ul>
-                            </nav>
-            </div>
-            {% endblock %}
+                        <div class="row">
+                            <div class="col">
+                                <form class="px-4 my-4">
+                                    <h4 class="text-center">Add new Project</h4>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" id="project_name" placeholder="Project name">
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" id="pr_img" placeholder="Path to img">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="short_desc" rows="3" placeholder="Project short description"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" id="stack" placeholder="Stack">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="long_desc" rows="10" placeholder="Project full description"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" id="live_anchor" placeholder="Live web-site anchor">
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" id="github_anchor" placeholder="Github anchor">
+                                    </div>
+                                    <button class="btn btn-primary btn-block" type="submit">Save</button>
+                                    
+                                </form>
+                                {% endblock %}

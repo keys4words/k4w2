@@ -16,11 +16,13 @@ def load_user(user_id):
 def superuser(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if current_user.roles[0].name != 'admin'::
-            flash('You need to have Admin priveledges!', category='danger')
-            redirect(url_for('login'))
-        return f(*args, **kwargs)
-
+        if current_user.is_authenticated:
+            if current_user.roles[0].name != 'admin':
+                flash('You need to have Admin priveledges!', category='danger')
+                redirect(url_for('login'))
+            return f(*args, **kwargs)
+        else:
+            return redirect(url_for('login'))
     return decorated_function
 
 def is_safe_url(target):
@@ -87,22 +89,13 @@ def logout():
 
 
 @app.route('/admin')
-@login_required
-def admin_page():
-    if current_user.roles[0].name == 'admin':
-        flash('Welcome, admin', category='info')
-        projects = Project.query.all()
-        return render_template('admin_page.html', projects=projects)
-    flash('You need to have Admin priveledges!', category='danger')
-    return redirect(url_for('login'))
-
+@superuser
+def projects_list():
+    projects = Project.query.all()
+    return render_template('admin_page.html', projects=projects)
 
 
 @app.route('/admin/add')
-@login_required
+@superuser
 def admin_add_project():
-    if current_user.roles[0].name == 'admin':
-        return render_template('add_project.html')
-
-    flash('You need to have Admin priveledges!', category='danger')
-    return redirect(url_for('login'))
+    return render_template('add_project.html')
