@@ -7,6 +7,9 @@ from werkzeug.security import check_password_hash
 from app import app, db, login_manager
 from app.models import User, Project
 
+from app.forms import AddProjectForm
+
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -95,7 +98,24 @@ def projects_list():
     return render_template('admin_page.html', projects=projects)
 
 
-@app.route('/admin/add')
+@app.route('/admin/add', methods=['GET', 'POST'])
 @superuser
 def admin_add_project():
-    return render_template('add_project.html')
+    form = AddProjectForm()
+    if form.validate_on_submit():
+        pr_img = form.pr_img.data
+        name = form.name.data
+        short_desc = form.short_desc.data
+        stack = form.stack.data
+        long_desc = form.long_desc.data
+        live_anchor = form.live_anchor.data
+        github_anchor = form.github_anchor.data
+
+        new_project = Project(name, pr_img, short_desc, stack, long_desc, live_anchor, github_anchor)
+
+        db.session.add(new_project)
+        db.session.commit()
+        flash(f'Project {name} was successfully added!', category='info')
+        return redirect(url_for('projects_list'))
+        
+    return render_template('add_project.html', form=form)
