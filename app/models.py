@@ -48,12 +48,12 @@ class Project(db.Model):
     __tablename__ = 'project'
     id = db.Column(db.Integer(), primary_key=True)
     pr_img = db.Column(db.String(255))
-    name = db.Column(db.String(50), nullable=False, server_default=u'', unique=True)
-    short_desc = db.Column(db.String(255), nullable=False, server_default=u'')
+    name = db.Column(db.String(50))
+    short_desc = db.Column(db.String(255))
     stack = db.Column(db.String(255))
-    long_desc = db.Column(db.Text, server_default=u'')
-    live_anchor = db.Column(db.String(150), server_default=u'')
-    github_anchor = db.Column(db.String(150), server_default=u'')
+    long_desc = db.Column(db.Text)
+    live_anchor = db.Column(db.String(150))
+    github_anchor = db.Column(db.String(150))
 
     def __init__(self, name, pr_img, short_desc, stack, long_desc, live_anchor, github_anchor):
         self.name = name

@@ -96,9 +96,10 @@
                                     </a>
                                   </td>
                                   <td>
-                                    <a href="#" class="btn btn-danger">
-                                      <i class="fas fa-trash mr-2"></i> Remove
-                                    </a>
+                                    <form action="{{ url_for('projects_list') }}" method="POST">
+                                      <input type="hidden" value="{{ project.id }}" name="project_to_del">
+                                      <button type="submit" class="btn btn-danger"><i class='fas fa-trash mr-2'></i> Remove</button>
+                                    </form>
                                   </td>
                                 </tr>
                                 {% endfor %}

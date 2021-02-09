@@ -72,28 +72,28 @@
                             <div class="col">
                                 <form class="px-4 my-4" method="POST">
                                     <h4 class="text-center">Add new Project</h4>
+                                    {{ form.csrf_token }}
                                     <div class="form-group">
                                         {{ form.name(class_="form-control", placeholder="Project name") }}
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" type="text" id="pr_img" placeholder="Path to img">
+                                        {{ form.pr_img(class_="form-control", placeholder="Path to img") }}
                                     </div>
                                     <div class="form-group">
-                                        <textarea class="form-control" id="short_desc" rows="3" placeholder="Project short description"></textarea>
+                                        {{ form.short_desc(class_="form-control", rows="3", placeholder="Project short description") }}
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" type="text" id="stack" placeholder="Stack">
+                                        {{ form.stack(class_="form-control", placeholder="Stack") }}
                                     </div>
                                     <div class="form-group">
-                                        <textarea class="form-control" id="long_desc" rows="10" placeholder="Project full description"></textarea>
+                                        {{ form.long_desc(class_="form-control", rows="10", placeholder="Project full description") }}
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" type="text" id="live_anchor" placeholder="Live web-site anchor">
+                                        {{ form.live_anchor(class_="form-control", placeholder="Live web-site anchor") }}
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" type="text" id="github_anchor" placeholder="Github anchor">
+                                        {{ form.github_anchor(class_="form-control", placeholder="Github anchor") }}
                                     </div>
-                                    <button class="btn btn-primary btn-block" type="submit">Save</button>
-                                    
+                                    <button class="btn btn-primary btn-block" type="submit">Add project</button>
                                 </form>
                                 {% endblock %}

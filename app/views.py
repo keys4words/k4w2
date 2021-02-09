@@ -91,9 +91,17 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/admin')
+@app.route('/admin', methods=['GET', 'POST'])
 @superuser
 def projects_list():
+    if request.method == 'POST':
+        id = request.form.get('project_to_del')
+        if id:
+            project_to_del = Project.query.get(int(id))
+            db.session.delete(project_to_del)
+            db.session.commit()
+            flash(f'Project was successfully deleted!', category='info')
+
     projects = Project.query.all()
     return render_template('admin_page.html', projects=projects)
 
@@ -112,7 +120,6 @@ def admin_add_project():
         github_anchor = form.github_anchor.data
 
         new_project = Project(name, pr_img, short_desc, stack, long_desc, live_anchor, github_anchor)
-
         db.session.add(new_project)
         db.session.commit()
         flash(f'Project {name} was successfully added!', category='info')
