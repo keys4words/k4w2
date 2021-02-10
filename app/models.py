@@ -19,6 +19,9 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"<User {self.login}>"
+    
+    def is_admin(self):
+        return self.roles[0].name == 'admin'
 
 
 class Role(db.Model):

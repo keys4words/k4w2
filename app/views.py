@@ -22,7 +22,7 @@ def superuser(f):
         if current_user.is_authenticated:
             if current_user.roles[0].name != 'admin':
                 flash('You need to have Admin priveledges!', category='danger')
-                redirect(url_for('login'))
+                return redirect(url_for('login'))
             return f(*args, **kwargs)
         else:
             return redirect(url_for('login'))
@@ -53,13 +53,19 @@ def login():
             user = User.query.filter_by(login=request.form['login']).first()
             if user:
                 if check_password_hash(user.password, password):
-                    flash('You are successfully log in!', category='info')
-                    login_user(user, remember=True)
+                    if user.is_admin():
+                        login_user(user, remember=True)
+                        flash('Hey, Admin!', category='info')
+                        return redirect(url_for('projects_list'))
+                        
+                    else:
+                        flash('You are successfully log in!', category='info')
+                        login_user(user, remember=True)
                    
-                    next_page = request.args.get('next')
-                    if next_page:
-                        return redirect(next_page)
-                    return redirect(url_for('projects'))
+                        next_page = request.args.get('next')
+                        if next_page:
+                            return redirect(next_page)
+                        return redirect(url_for('projects'))
                 else:
                     flash('Wrong password!', category='danger')
             else:
@@ -125,4 +131,25 @@ def admin_add_project():
         flash(f'Project {name} was successfully added!', category='info')
         return redirect(url_for('projects_list'))
         
-    return render_template('add_project.html', form=form)
+    return render_template('add_project.html', action="Add project", form=form)
+
+
+@app.route('/admin/<int:project_id>')
+@superuser
+def edit_project(project_id):
+    project_to_update = Project.query.get(project_id)
+    form = AddProjectForm(obj=project_to_update)
+    if form.validate_on_submit():
+        project_to_update.pr_img = form.pr_img.data
+        project_to_update.name = form.name.data
+        project_to_update.short_desc = form.short_desc.data
+        project_to_update.stack = form.stack.data
+        project_to_update.long_desc = form.long_desc.data
+        project_to_update.live_anchor = form.live_anchor.data
+        project_to_update.github_anchor = form.github_anchor.data
+
+        db.session.commit()
+        flash(f'Project {name} was successfully updated!', category='info')
+        return redirect(url_for('projects_list'))
+        
+    return render_template('add_project.html', action="Update Project", form=form)
