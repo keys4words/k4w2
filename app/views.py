@@ -4,11 +4,13 @@ from flask import Blueprint, redirect, render_template, request, url_for, sessio
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
-from app import app, db, login_manager
+from app import db, login_manager
 from app.models import User, Project
 
 from app.forms import AddProjectForm
 
+
+basic_routes = Blueprint('basic_routes', __name__)
 
 
 @login_manager.user_loader
@@ -28,23 +30,24 @@ def superuser(f):
             return redirect(url_for('login'))
     return decorated_function
 
+
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+@basic_routes.route('/')
+def home():
+    return render_template('home.html')
 
 
-@app.errorhandler(404)
+@basic_routes.errorhandler(404)
 def pageNotFound(error):
     return render_template('404.html'), 404
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@basic_routes.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         login = request.form.get('login')
@@ -76,80 +79,22 @@ def login():
     return render_template('login.html')
     
 
-@app.route('/projects')
+@basic_routes.route('/projects')
 def projects():
     projects = Project.query.all()
     return render_template('projects.html', projects=projects)
 
 
-@app.route('/projects/<int:id>')
+@basic_routes.route('/projects/<int:id>')
 @login_required
 def project(id):
     project = Project.query.filter_by(id=id).first()
     return render_template('project.html', project=project)
 
 
-@app.route('/logout')
+@basic_routes.route('/logout')
 @login_required
 def logout():
     logout_user()
     flash('You logged out!', category='info')
-    return redirect(url_for('index'))
-
-
-@app.route('/admin', methods=['GET', 'POST'])
-@superuser
-def projects_list():
-    if request.method == 'POST':
-        id = request.form.get('project_to_del')
-        if id:
-            project_to_del = Project.query.get(int(id))
-            db.session.delete(project_to_del)
-            db.session.commit()
-            flash(f'Project was successfully deleted!', category='info')
-
-    projects = Project.query.all()
-    return render_template('admin_page.html', projects=projects)
-
-
-@app.route('/admin/add', methods=['GET', 'POST'])
-@superuser
-def admin_add_project():
-    form = AddProjectForm()
-    if form.validate_on_submit():
-        pr_img = form.pr_img.data
-        name = form.name.data
-        short_desc = form.short_desc.data
-        stack = form.stack.data
-        long_desc = form.long_desc.data
-        live_anchor = form.live_anchor.data
-        github_anchor = form.github_anchor.data
-
-        new_project = Project(name, pr_img, short_desc, stack, long_desc, live_anchor, github_anchor)
-        db.session.add(new_project)
-        db.session.commit()
-        flash(f'Project {name} was successfully added!', category='info')
-        return redirect(url_for('projects_list'))
-        
-    return render_template('add_project.html', action="Add project", form=form)
-
-
-@app.route('/admin/<int:project_id>')
-@superuser
-def edit_project(project_id):
-    project_to_update = Project.query.get(project_id)
-    form = AddProjectForm(obj=project_to_update)
-    if form.validate_on_submit():
-        project_to_update.pr_img = form.pr_img.data
-        project_to_update.name = form.name.data
-        project_to_update.short_desc = form.short_desc.data
-        project_to_update.stack = form.stack.data
-        project_to_update.long_desc = form.long_desc.data
-        project_to_update.live_anchor = form.live_anchor.data
-        project_to_update.github_anchor = form.github_anchor.data
-
-        db.session.commit()
-        flash(f'Project {name} was successfully updated!', category='info')
-        return redirect(url_for('projects_list'))
-        
-    return render_template('add_project.html', action="Update Project", form=form)
+    return redirect(url_for('home'))
