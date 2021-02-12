@@ -24,10 +24,10 @@ def superuser(f):
         if current_user.is_authenticated:
             if current_user.roles[0].name != 'admin':
                 flash('You need to have Admin priveledges!', category='danger')
-                return redirect(url_for('login'))
+                return redirect(url_for('basic_routes.login'))
             return f(*args, **kwargs)
         else:
-            return redirect(url_for('login'))
+            return redirect(url_for('basic_routes.login'))
     return decorated_function
 
 
@@ -59,7 +59,7 @@ def login():
                     if user.is_admin():
                         login_user(user, remember=True)
                         flash('Hey, Admin!', category='info')
-                        return redirect(url_for('projects_list'))
+                        return redirect(url_for('admin_routes.cms'))
                         
                     else:
                         flash('You are successfully log in!', category='info')
@@ -68,7 +68,7 @@ def login():
                         next_page = request.args.get('next')
                         if next_page:
                             return redirect(next_page)
-                        return redirect(url_for('projects'))
+                        return redirect(url_for('basic_routes.projects'))
                 else:
                     flash('Wrong password!', category='danger')
             else:
@@ -97,4 +97,4 @@ def project(id):
 def logout():
     logout_user()
     flash('You logged out!', category='info')
-    return redirect(url_for('home'))
+    return redirect(url_for('basic_routes.home'))

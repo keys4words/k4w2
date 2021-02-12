@@ -7,93 +7,42 @@
 
 {% block content %}
 
-<body class="d-flex flex-column h-100 body-bg2">
-    <header>
+<div class="block-404">
+    <h2 class="display-3 text-center mb-3">Admin Page</h2>
+    <section id="categories">
         <div class="container">
-            <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-dark">
-                <a class="navbar-brand" href="{{  url_for('index')  }}">K4W</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{  url_for('index')  }}">Home <span
-                                    class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{  url_for('projects')  }}">Projects</a>
-                        </li>
-                        {% if current_user.is_authenticated %}
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{  url_for('projects_list')  }}">Project List</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{  url_for('logout')  }}">Logout</a>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{  url_for('login')  }}">Login</a>
-                        </li>
-                        {% endif %}
-                    </ul>
+            <div class="row">
+                <div class="col">
+                    <form class="px-4 my-4" method="POST">
+                        <h4 class="text-center">Add new Project</h4>
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            {{ form.name(class_="form-control", placeholder="Project name") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.pr_img(class_="form-control", placeholder="Path to img") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.short_desc(class_="form-control", rows="3", placeholder="Project short description")
+                            }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.stack(class_="form-control", placeholder="Stack") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.long_desc(class_="form-control", rows="10", placeholder="Project full description")
+                            }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.live_anchor(class_="form-control", placeholder="Live web-site anchor") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.github_anchor(class_="form-control", placeholder="Github anchor") }}
+                        </div>
+                        <button class="btn btn-primary btn-block" type="submit">{{ action }}</button>
+                    </form>
                 </div>
-            </nav>
-            <!-- end of Navbar -->
-        </div>
-    </header>
-
-
-
-    <main class="flex-shrink-0">
-        <div class="container">
-            <!-- flash message -->
-            {% with flash_messages = get_flashed_messages(True) %}
-            {% if flash_messages %}
-            {% for cat, msg in flash_messages %}
-            <div class="alert alert-{{ cat }} alert-dismissible fade show bg-light" role="alert">
-                <strong>{{ msg }}!</strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <!-- end of flash message -->
-            <div class="block-404">
-                <h2 class="display-3 text-center mb-3">Admin Page</h2>
-                <section id="categories">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <form class="px-4 my-4" method="POST">
-                                    <h4 class="text-center">Add new Project</h4>
-                                    {{ form.csrf_token }}
-                                    <div class="form-group">
-                                        {{ form.name(class_="form-control", placeholder="Project name") }}
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form.pr_img(class_="form-control", placeholder="Path to img") }}
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form.short_desc(class_="form-control", rows="3", placeholder="Project short description") }}
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form.stack(class_="form-control", placeholder="Stack") }}
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form.long_desc(class_="form-control", rows="10", placeholder="Project full description") }}
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form.live_anchor(class_="form-control", placeholder="Live web-site anchor") }}
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form.github_anchor(class_="form-control", placeholder="Github anchor") }}
-                                    </div>
-                                    <button class="btn btn-primary btn-block" type="submit">{{ action }}</button>
-                                </form>
-                                {% endblock %}
+        </div>
+    </section>
+{% endblock %}
