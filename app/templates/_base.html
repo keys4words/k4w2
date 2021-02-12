@@ -15,31 +15,32 @@
         <div class="container">
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-dark">
-                <a class="navbar-brand" href="{{  url_for('home')  }}">K4W</a>
+                <a class="navbar-brand" href="{{  url_for('basic_routes.home')  }}">K4W</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item {{ 'active' if active_page == 'home' }}">
-                            <a class="nav-link" href="{{  url_for('home')  }}">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{{  url_for('basic_routes.home')  }}">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item {{ 'active' if active_page == 'projects' }}">
-                            <a class="nav-link" href="{{  url_for('projects')  }}">Projects</a>
+                            <a class="nav-link" href="{{  url_for('basic_routes.projects')  }}">Projects</a>
                         </li>
                         {% if current_user.is_authenticated %}
                           {% if current_user.is_admin %}
                             <li class="nav-item  {{ 'active' if active_page == 'cms' }}">
-                              <a class="nav-link" href="{{  url_for('cms')  }}">CMS</a>
+                              <a class="nav-link" href="{{  url_for('admin_routes.cms')  }}">CMS</a>
                             </li>
                           {% endif %}
                           <li class="nav-item  {{ 'active' if active_page == 'logout' }}">
-                              <a class="nav-link" href="{{  url_for('logout')  }}">Logout</a>
+                              <a class="nav-link" href="{{  url_for('basic_routes.logout')  }}">Logout</a>
                           </li>
                         {% else %}
                         <li class="nav-item  {{ 'active' if active_page == 'login' }}">
-                            <a class="nav-link" href="{{  url_for('login')  }}">Login</a>
+                            <a class="nav-link" href="{{  url_for('basic_routes.login')  }}">Login</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>

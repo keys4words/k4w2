@@ -8,27 +8,8 @@
 
 {% block content %}
 
-
-    <main class="flex-shrink-0">
-        <div class="container">
-            <!-- flash message -->
-            {% with flash_messages = get_flashed_messages(True) %}
-            {% if flash_messages %}
-                {% for cat, msg in flash_messages %}
-                <div class="alert alert-{{ cat }} alert-dismissible fade show bg-light" role="alert">
-                    <strong>{{ msg }}!</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <!-- end of flash message -->
-
             <div class="block-404">
                 <h2 class="display-3 text-center mb-3">My Projects</h2>
-                
                 <div class="card-columns">
                     <!-- get projects from db -->
                     {% for project in projects %}
@@ -40,11 +21,11 @@
                             <p class="card-text text-muted">
                                 <small>Stack: {{ project.stack }}</small>
                             </p>
-                            <a class="btn btn-outline-dark" type="button" href="{{ url_for('project', id=project.id) }}">Details</a>
+                            <a class="btn btn-outline-dark" type="button" href="{{ url_for('basic_routes.project', id=project.id) }}">Details</a>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
 
-            {% endblock %}
+{% endblock %}
