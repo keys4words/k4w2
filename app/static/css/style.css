@@ -4,12 +4,12 @@ body {
     font-family: 'Raleway', sans-serif;
 }
 
-.body-bg {
-    background: #333 url('../img/bg.jpg') no-repeat center center / cover;
+.body-bg{
+    background-color: black;
 }
 
-.body-bg2{
-    background-color: black;
+.body-bg2 {
+    background: #333 url('../img/bg.jpg') no-repeat center center / cover;
 }
 
 h1,
@@ -80,6 +80,15 @@ social a:hover > img{
 
 .social a:last-child {
     margin-right: 0px;
+}
+
+.single-card {
+    background-color:black;
+    padding: 2rem;
+}
+
+.single_post {
+    width: 30%;
 }
 
 .card-header {

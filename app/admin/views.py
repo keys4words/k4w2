@@ -24,11 +24,10 @@ def superuser(f):
         if current_user.is_authenticated:
             if current_user.roles[0].name != 'admin':
                 flash('You need to have Admin priveledges!', category='danger')
-                return redirect(url_for('login'))
-            return f(*args, **kwargs)
-        else:
-            return redirect(url_for('login'))
+                return redirect(url_for('basic_routes.login'))
+        return f(*args, **kwargs)
     return decorated_function
+
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
@@ -37,6 +36,7 @@ def is_safe_url(target):
 
 
 @admin_routes.route('/', methods=['GET', 'POST'])
+@superuser
 def cms():
     if request.method == 'POST':
         id = request.form.get('project_to_del')
@@ -51,6 +51,7 @@ def cms():
 
 
 @admin_routes.route('/add', methods=['GET', 'POST'])
+@superuser
 def add_project():
     form = AddProjectForm()
     if form.validate_on_submit():
@@ -66,12 +67,13 @@ def add_project():
         db.session.add(new_project)
         db.session.commit()
         flash(f'Project {name} was successfully added!', category='info')
-        return redirect(url_for('projects_list'))
+        return redirect(url_for('admin_routes.cms'))
         
     return render_template('add_project.html', action="Add project", form=form)
 
 
 @admin_routes.route('/<int:project_id>')
+@superuser
 def edit_project(project_id):
     project_to_update = Project.query.get(project_id)
     form = AddProjectForm(obj=project_to_update)
@@ -86,6 +88,6 @@ def edit_project(project_id):
 
         db.session.commit()
         flash(f'Project {name} was successfully updated!', category='info')
-        return redirect(url_for('projects_list'))
+        return redirect(url_for('admin_routes.cms'))
         
     return render_template('add_project.html', action="Update Project", form=form)

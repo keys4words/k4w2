@@ -1,13 +1,9 @@
-from functools import wraps
-
 from flask import Blueprint, redirect, render_template, request, url_for, session, flash
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
 from app import db, login_manager
 from app.models import User, Project
-
-from app.forms import AddProjectForm
 
 
 basic_routes = Blueprint('basic_routes', __name__)
@@ -16,19 +12,6 @@ basic_routes = Blueprint('basic_routes', __name__)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
-
-def superuser(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if current_user.is_authenticated:
-            if current_user.roles[0].name != 'admin':
-                flash('You need to have Admin priveledges!', category='danger')
-                return redirect(url_for('basic_routes.login'))
-            return f(*args, **kwargs)
-        else:
-            return redirect(url_for('basic_routes.login'))
-    return decorated_function
 
 
 def is_safe_url(target):
@@ -40,11 +23,6 @@ def is_safe_url(target):
 @basic_routes.route('/')
 def home():
     return render_template('home.html')
-
-
-@basic_routes.errorhandler(404)
-def pageNotFound(error):
-    return render_template('404.html'), 404
 
 
 @basic_routes.route('/login', methods=['GET', 'POST'])
