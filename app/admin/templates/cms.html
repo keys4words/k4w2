@@ -35,7 +35,7 @@
                   <td>{{ project.name }}</td>
                   <td>{{ project.stack }}</td>
                   <td>
-                    <a href="#" class="btn btn-secondary">
+                    <a href="{{ url_for('admin_routes.edit_project', project_id=project.id) }}" class="btn btn-secondary">
                       <i class="fas fa-pencil-alt mr-2"></i> Edit
                     </a>
                   </td>

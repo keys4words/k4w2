@@ -69,15 +69,16 @@ def add_project():
         flash(f'Project {name} was successfully added!', category='info')
         return redirect(url_for('admin_routes.cms'))
         
-    return render_template('add_project.html', action="Add project", form=form)
+    return render_template('add_project.html', form=form, h4='Add new project', action="Add project")
 
 
-@admin_routes.route('/<int:project_id>')
+@admin_routes.route('/<int:project_id>', methods=['GET', 'POST'])
 @superuser
 def edit_project(project_id):
-    project_to_update = Project.query.get(project_id)
-    form = AddProjectForm(obj=project_to_update)
-    if form.validate_on_submit():
+    if request.method == 'GET':
+        project_to_update = Project.query.get(project_id)
+        form = AddProjectForm(obj=project_to_update)
+    elif form.validate_on_submit():
         project_to_update.pr_img = form.pr_img.data
         project_to_update.name = form.name.data
         project_to_update.short_desc = form.short_desc.data
@@ -90,4 +91,4 @@ def edit_project(project_id):
         flash(f'Project {name} was successfully updated!', category='info')
         return redirect(url_for('admin_routes.cms'))
         
-    return render_template('add_project.html', action="Update Project", form=form)
+    return render_template('add_project.html', form=form, h4='Edit project', action="Save changes")
