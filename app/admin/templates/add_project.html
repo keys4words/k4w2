@@ -20,12 +20,13 @@
                             {{ form.name(class_="form-control", placeholder="Project name") }}
                         </div>
                         <div class="form-group">
-                            {{ form.pr_img(class_="form-control", placeholder="Path to img") }}
+                            {{ form.pr_img(class_="form-control", placeholder="Path to img") | safe}}
                         </div>
                         <div class="form-group">
-                            {{ form.short_desc(class_="form-control", rows="3", placeholder="Project short description")
+                            {{ form.short_desc(class_="form-control", rows="3", placeholder="Project short description") | safe
                             }}
                         </div>
+                            {% if form. %}
                         <div class="form-group">
                             {{ form.stack(class_="form-control", placeholder="Stack") }}
                         </div>
@@ -34,10 +35,10 @@
                             }}
                         </div>
                         <div class="form-group">
-                            {{ form.live_anchor(class_="form-control", placeholder="Live web-site anchor") }}
+                            {{ form.live_anchor(class_="form-control", placeholder="Live web-site anchor") | safe }}
                         </div>
                         <div class="form-group">
-                            {{ form.github_anchor(class_="form-control", placeholder="Github anchor") }}
+                            {{ form.github_anchor(class_="form-control", placeholder="Github anchor") | safe }}
                         </div>
                         <button class="btn btn-primary btn-block" type="submit">{{ action }}</button>
                     </form>

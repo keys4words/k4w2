@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from app.models import seed_db
 
 
 db = SQLAlchemy()
@@ -15,12 +16,14 @@ def create_app():
     app.config.from_pyfile('config.cfg')
     db.init_app(app)
     login_manager.init_app(app)
+    Migrate(app, db)
 
     with app.app_context():
         @app.errorhandler(404)
         def pageNotFound(error):
             return render_template('404.html'), 404
         
+        seed_db(db)
         from app.views import basic_routes
         app.register_blueprint(basic_routes)
         from app.admin.views import admin_routes

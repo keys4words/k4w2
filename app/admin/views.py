@@ -58,12 +58,12 @@ def add_project():
         pr_img = form.pr_img.data
         name = form.name.data
         short_desc = form.short_desc.data
-        stack = form.stack.data
+        # tags = form.tags.data
         long_desc = form.long_desc.data
         live_anchor = form.live_anchor.data
         github_anchor = form.github_anchor.data
 
-        new_project = Project(name, pr_img, short_desc, stack, long_desc, live_anchor, github_anchor)
+        new_project = Project(name, pr_img, short_desc, long_desc, live_anchor, github_anchor)
         db.session.add(new_project)
         db.session.commit()
         flash(f'Project {name} was successfully added!', category='info')
@@ -82,7 +82,7 @@ def edit_project(project_id):
         project_to_update.pr_img = form.pr_img.data
         project_to_update.name = form.name.data
         project_to_update.short_desc = form.short_desc.data
-        project_to_update.stack = form.stack.data
+        # project_to_update.stack = form.stack.data
         project_to_update.long_desc = form.long_desc.data
         project_to_update.live_anchor = form.live_anchor.data
         project_to_update.github_anchor = form.github_anchor.data
