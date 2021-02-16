@@ -1,7 +1,9 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
-from app import db
+from flask_sqlalchemy import SQLAlchemy
 
+
+db = SQLAlchemy()
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -20,19 +22,6 @@ class User(db.Model, UserMixin):
     
     def make_inactive(self):
         self.active = False
-
-
-class Tag(db.Model):
-    __tablename__ = 'tag'
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(50), nullable=False, unique=True)
-    projectid = db.Column(db.Integer, db.ForeignKey('project.id'))
-
-    def __init__(self, name):
-        self.name = name
-
-    def __repr__(self):
-        return f'{self.name}'
 
 
 class Project(db.Model):
@@ -55,15 +44,26 @@ class Project(db.Model):
         self.live_anchor = live_anchor
         self.github_anchor = github_anchor
 
-    def add_tag(self, tag):
-        self.tags.append(tag.id)
-
     def __repr__(self):
         return f'<Project {self.name}>'
 
 
+class Tag(db.Model):
+    __tablename__ = 'tag'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return f'{self.name}'
+
+
+
 def seed_db(db):
-    # db.create_all()
+    db.create_all()
 
     pass_4_admin = input('Input pass for Admin: ')
     pass_4_guest = input('Input pass for guest: ')
@@ -95,23 +95,18 @@ def seed_db(db):
 
     Admin see all users and may approve expert status for definite expert.
     ''', 'https://nameless-woodland-28899.herokuapp.com/', 'https://github.com/keys4words/faq.git')
-    pr1.add_tag(flask)
-    pr1.add_tag(dbs)
+    pr1.tags.extend([flask, dbs])
 
     pr2 = Project('Pulse', 'pr2.jpg', 'Ecom', '', '', 'https://github.com/keys4words/pulse')
-    pr2.add_tag(html)
-    pr2.add_tag(js_stack)
-    pr2.add_tag(php)
+    pr2.tags.extend([html, js_stack, php])
 
     pr3 = Project('Real estate App', 'pr3.jpg', 'Django ecomm web-service for real estate','lorem ipsum','', '')
-    pr3.add_tag(django)
-    pr3.add_tag(dbs)
+    pr3.tags.extend([django, dbs])
 
     pr4 = Project('Flask Landing', 'pr4.jpg', 'Flask landing page with signup form', 
      '''Landing page with signup form - to get subscribers.
      ''', 'https://my-looplab.herokuapp.com/', 'https://github.com/keys4words/looplab.git')
-    pr4.add_tag(flask)
-    pr4.add_tag(dbs)
+    pr4.tags.extend([flask, dbs])
 
     pr5 = Project('Flask API', 'pr5.jpg', 'Flask API with auth - GET/POST/PUT/PATCH/DELETE support',
      '''Create app on base sqlite db with base authorization (username=’admin’, password=’admin’). 
@@ -148,13 +143,10 @@ def seed_db(db):
             "message": “The member has been deleted!”
         }
     ''', 'http://keys4.pythonanywhere.com/', 'https://github.com/keys4words/flaskApi.git')
-    pr5.add_tag(flask)
-    pr5.add_tag(api)
-    pr5.add_tag(dbs)
+    pr5.tags.extend([flask, dbs, api])
 
-    pr6 = Project('Tender scraping', 'pr6.jpg', 'Bunch of web-scrapers government tenders', 'Python', '', '', 'https://github.com/keys4words/tenders')
-    pr6.add_tag(scraping)
-    pr6.add_tag(dbs)
+    pr6 = Project('Tender scraping', 'pr6.jpg', 'Bunch of web-scrapers government tenders', '', '', 'https://github.com/keys4words/tenders')
+    pr6.tags.extend([dbs, scraping])
 
     db.session.add_all([pr1, pr2, pr3, pr4, pr5, pr6])
     db.session.commit()

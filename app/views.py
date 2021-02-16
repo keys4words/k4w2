@@ -2,8 +2,8 @@ from flask import Blueprint, redirect, render_template, request, url_for, sessio
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
-from app import db, login_manager
-from app.models import User, Project
+from app import login_manager
+from app.models import User, Project, Tag
 
 
 basic_routes = Blueprint('basic_routes', __name__)
