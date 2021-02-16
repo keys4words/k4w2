@@ -8,19 +8,22 @@
 
 {% block content %}
 
-            <div class="block-404">
-                <h2 class="display-3 text-center mb-3">My Projects</h2>
-                <div class="card-columns">
-                    <!-- get projects from db -->
-                    {% for project in projects %}
-                    <div class="card">
-                        <img class="card-img-top" src="{{ url_for('static', filename='img/small/'+project.pr_img) }}" alt="">
-                        <div class="card-body">
-                            <h4 class="card-title">{{ project.name }}</h4>
+        <div class="block-404">
+            <h2 class="display-3 text-center mb-3">My Projects</h2>
+            <div class="card-columns">
+                <!-- get projects from db -->
+                {% for project in projects %}
+                <div class="card">
+                    <img class="card-img-top" src="{{ url_for('static', filename='img/small/'+project.pr_img) }}" alt="">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ project.name }}</h4>
+                        {% if project.tags %}
+                        <p class=card-text">
+                            {% for tag in project.tags %}
+                                <span class="mr-2 badge badge-pill badge-{{ tag.bg }}">{{ tag.name }}</span>
+                            {% endfor %}
+                        {% endif %}
                             <p class="card-text">{{ project.short_desc }}</p>
-                            <p class="card-text text-muted">
-                                <small>Stack: {{ project.stack }}</small>
-                            </p>
                             <a class="btn btn-outline-dark" type="button" href="{{ url_for('basic_routes.project', id=project.id) }}">Details</a>
                         </div>
                     </div>

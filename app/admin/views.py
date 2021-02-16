@@ -22,7 +22,7 @@ def superuser(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if current_user.is_authenticated:
-            if current_user.roles[0].name != 'admin':
+            if not current_user.is_admin:
                 flash('You need to have Admin priveledges!', category='danger')
                 return redirect(url_for('basic_routes.login'))
         return f(*args, **kwargs)

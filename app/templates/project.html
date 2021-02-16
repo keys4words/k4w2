@@ -10,7 +10,12 @@
 
 <div class="card single-card">
     <img class="my-4 single_post" src="{{ url_for('static', filename='img/big/' + project.pr_img) }}">
-    <p class="text-muted">Stack: {{ project.stack }} </p>
+    {% if project.tags %}
+    <p>{% for tag in project.tags %}
+        <span class="mr-2 badge badge-pill badge-{{ tag.bg }}">{{ tag.name }}</span>
+       {% endfor %}
+    </p>
+    {% endif %}
     <div class="my-4">{{ project.long_desc }}</div>
     {% if project.live_anchor %}
     <p class="text-center"><a href="{{ project.live_anchor }}">Live web-site</a></p>

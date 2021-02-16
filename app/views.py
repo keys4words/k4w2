@@ -34,7 +34,7 @@ def login():
             user = User.query.filter_by(login=request.form['login']).first()
             if user:
                 if check_password_hash(user.password, password):
-                    if user.is_admin():
+                    if user.is_admin:
                         login_user(user, remember=True)
                         flash('Hey, Admin!', category='info')
                         return redirect(url_for('admin_routes.cms'))
@@ -60,7 +60,8 @@ def login():
 @basic_routes.route('/projects')
 def projects():
     projects = Project.query.all()
-    return render_template('projects.html', projects=projects)
+    tags = Tag.query.all()
+    return render_template('projects.html', projects=projects, tags=tags)
 
 
 @basic_routes.route('/projects/<int:id>')

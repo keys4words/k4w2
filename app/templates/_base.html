@@ -21,6 +21,18 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto">
+                        {% if current_user.is_authenticated and active_page == 'projects'%}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter projects</a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">All</a>
+                                {% for tag in tags %}
+                                <a class="dropdown-item" href="#">{{ tag.name }}</a>
+                                {% endfor %}
+                            </div>
+                        </li>
+                        {% endif %}
                         <li class="nav-item {{ 'active' if active_page == 'home' }}">
                             <a class="nav-link" href="{{  url_for('basic_routes.home')  }}">Home <span class="sr-only">(current)</span></a>
                         </li>
@@ -28,7 +40,7 @@
                             <a class="nav-link" href="{{  url_for('basic_routes.projects')  }}">Projects</a>
                         </li>
                         {% if current_user.is_authenticated %}
-                            {% if current_user.is_admin() %}
+                            {% if current_user.is_admin %}
                             <li class="nav-item  {{ 'active' if active_page == 'cms' }}">
                               <a class="nav-link" href="{{  url_for('admin_routes.cms')  }}">CMS</a>
                             </li>

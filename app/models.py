@@ -52,10 +52,12 @@ class Tag(db.Model):
     __tablename__ = 'tag'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
+    bg = db.Column(db.String(50))
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
-    def __init__(self, name):
+    def __init__(self, name, bg):
         self.name = name
+        self.bg = bg
 
     def __repr__(self):
         return f'{self.name}'
@@ -73,14 +75,14 @@ def seed_db(db):
     db.session.add_all([admin, guest])
     db.session.commit()
 
-    flask = Tag('Flask')
-    dbs = Tag('DataBases')
-    html = Tag('HTML/CSS')
-    django = Tag('Django')
-    api = Tag('API')
-    php = Tag('PHP')
-    js_stack = Tag('JS')
-    scraping = Tag('Web-scraping')
+    flask = Tag('Flask', bg='primary')
+    dbs = Tag('Postgress', bg='secondary')
+    html = Tag('HTML/CSS', bg='warning')
+    django = Tag('Django', bg='danger')
+    api = Tag('API', bg='success')
+    php = Tag('PHP', bg='info')
+    js_stack = Tag('JS', bg='light')
+    scraping = Tag('Web-scraping', bg='dark')
 
     db.session.add_all([flask, dbs, html, django, api, php, js_stack])
     db.session.commit()
