@@ -21,7 +21,7 @@ def create_app():
         def pageNotFound(error):
             return render_template('404.html'), 404
         
-        # seed_db(db)
+        seed_db(db)
         from app.views import basic_routes
         app.register_blueprint(basic_routes)
         from app.admin.views import admin_routes

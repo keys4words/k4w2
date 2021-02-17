@@ -97,18 +97,27 @@ def seed_db(db):
 
     Admin see all users and may approve expert status for definite expert.
     ''', 'https://nameless-woodland-28899.herokuapp.com/', 'https://github.com/keys4words/faq.git')
-    pr1.tags.extend([flask, dbs])
 
+    pr1.tags.extend([flask, dbs])
+    db.session.add(pr1)
+    db.session.commit()
+    
     pr2 = Project('Pulse', 'pr2.jpg', 'Ecom', '', '', 'https://github.com/keys4words/pulse')
     pr2.tags.extend([html, js_stack, php])
+    db.session.add(pr2)
+    db.session.commit()
 
     pr3 = Project('Real estate App', 'pr3.jpg', 'Django ecomm web-service for real estate','lorem ipsum','', '')
     pr3.tags.extend([django, dbs])
+    db.session.add(pr3)
+    db.session.commit()
 
     pr4 = Project('Flask Landing', 'pr4.jpg', 'Flask landing page with signup form', 
      '''Landing page with signup form - to get subscribers.
      ''', 'https://my-looplab.herokuapp.com/', 'https://github.com/keys4words/looplab.git')
     pr4.tags.extend([flask, dbs])
+    db.session.add(pr4)
+    db.session.commit()
 
     pr5 = Project('Flask API', 'pr5.jpg', 'Flask API with auth - GET/POST/PUT/PATCH/DELETE support',
      '''Create app on base sqlite db with base authorization (username=’admin’, password=’admin’). 
@@ -145,12 +154,13 @@ def seed_db(db):
             "message": “The member has been deleted!”
         }
     ''', 'http://keys4.pythonanywhere.com/', 'https://github.com/keys4words/flaskApi.git')
+
     pr5.tags.extend([flask, dbs, api])
+    db.session.add(pr5)
+    db.session.commit()
 
     pr6 = Project('Tender scraping', 'pr6.jpg', 'Bunch of web-scrapers government tenders', '', '', 'https://github.com/keys4words/tenders')
     pr6.tags.extend([dbs, scraping])
-
-    db.session.add_all([pr1, pr2, pr3, pr4, pr5, pr6])
+    db.session.add(pr6)
     db.session.commit()
-
 
