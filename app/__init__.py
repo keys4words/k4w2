@@ -12,6 +12,10 @@ login_manager.login_message_category = "danger"
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.cfg')
+
+    login_manager = LoginManager()
+    login_manager.login_view = "basic_routes.login"
+    login_manager.login_message_category = "danger"
     db.init_app(app)
     login_manager.init_app(app)
     Migrate(app, db)
