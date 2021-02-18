@@ -66,9 +66,16 @@ class Tag(db.Model):
         return f'{self.name}'
 
 
+def default_tags():
+    tags = Tag.query.all()
+    def_tags = []
+    for tag in tags:
+        def_tags.append((tag.name, tag.name))
+    return def_tags
+
+
 
 def seed_db(db):
-    # db.create_all()
 
     pass_4_admin = input('Input pass for Admin: ')
     pass_4_guest = input('Input pass for guest: ')

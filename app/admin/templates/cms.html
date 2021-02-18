@@ -1,4 +1,5 @@
 {% extends "_base.html" %}
+{% set active_page = "cms" %}
 
 
 {% block title %}
@@ -31,9 +32,12 @@
               <tbody>
                 {% for project in projects %}
                 <tr>
-                  <td>{{ (project.id+1) }}</td>
+                  <td>{{ (project.id) }}</td>
                   <td>{{ project.name }}</td>
-                  <td>{{ project.stack }}</td>
+                  <td>{% for tag in project.tags %}
+                        <span class="mr-2 badge badge-pill badge-{{ tag.bg }}">{{ tag.name }}</span>
+                      {% endfor %}
+                  </td>
                   <td>
                     <a href="{{ url_for('admin_routes.edit_project', project_id=project.id) }}" class="btn btn-secondary">
                       <i class="fas fa-pencil-alt mr-2"></i> Edit

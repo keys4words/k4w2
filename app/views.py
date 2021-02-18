@@ -2,28 +2,15 @@ from flask import Blueprint, redirect, render_template, request, url_for, sessio
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
-from app import login_manager
 from app.models import User, Project, Tag
 
 
 basic_routes = Blueprint('basic_routes', __name__)
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-
-def is_safe_url(target):
-    ref_url = urlparse(request.host_url)
-    test_url = urlparse(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
-
-
 @basic_routes.route('/')
 def home():
     return render_template('home.html')
-
 
 @basic_routes.route('/login', methods=['GET', 'POST'])
 def login():

@@ -11,39 +11,44 @@
     <h2 class="display-3 text-center mb-3">Admin Page</h2>
     <section id="categories">
         <div class="container">
-            <div class="row">
-                <div class="col">
-                    <form class="px-4 my-4" method="POST">
-                        <h4 class="text-center">{{ h4 }}</h4>
-                        {{ form.csrf_token }}
-                        <div class="form-group">
-                            {{ form.name(class_="form-control", placeholder="Project name") }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.pr_img(class_="form-control", placeholder="Path to img") | safe}}
-                        </div>
-                        <div class="form-group">
-                            {{ form.short_desc(class_="form-control", rows="3", placeholder="Project short description") | safe
-                            }}
-                        </div>
-                            {% if form. %}
-                        <div class="form-group">
-                            {{ form.stack(class_="form-control", placeholder="Stack") }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.long_desc(class_="form-control", rows="10", placeholder="Project full description") | safe
-                            }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.live_anchor(class_="form-control", placeholder="Live web-site anchor") | safe }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.github_anchor(class_="form-control", placeholder="Github anchor") | safe }}
-                        </div>
-                        <button class="btn btn-primary btn-block" type="submit">{{ action }}</button>
-                    </form>
+            <form class="px-4 my-4" method="POST">
+                <h4 class="text-center">{{ h4 }}</h4>
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    {{ form.name(class_="form-control", placeholder="Project name") }}
                 </div>
-            </div>
+                <div class="form-group">
+                    {{ form.pr_img(class_="form-control", placeholder="Path to img") | safe}}
+                </div>
+                <div class="form-group">
+                    {{ form.short_desc(class_="form-control", rows="3", placeholder="Project short description") | safe
+                    }}
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            {{ form.tags(class_="form-control", placeholder="Tags") }}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <input type="text" id="new_tag" class="form-control" placeholder="Add new tag">
+                            <button type="button" id="btn_new_tag" class="btn btn-primary mt-3 btn-block">Add new tag</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form.long_desc(class_="form-control", rows="10", placeholder="Project full description") | safe
+                    }}
+                </div>
+                <div class="form-group">
+                    {{ form.live_anchor(class_="form-control", placeholder="Live web-site anchor") | safe }}
+                </div>
+                <div class="form-group">
+                    {{ form.github_anchor(class_="form-control", placeholder="Github anchor") | safe }}
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">{{ action }}</button>
+            </form>
         </div>
     </section>
-{% endblock %}
+    {% endblock %}

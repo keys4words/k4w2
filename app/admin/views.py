@@ -4,19 +4,12 @@ from flask import Blueprint, redirect, render_template, request, url_for, sessio
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
-from app import db, login_manager
-from app.models import User, Project
+from app.models import db, User, Project
 
 from app.forms import AddProjectForm
 
 
 admin_routes = Blueprint('admin_routes', __name__, url_prefix='/admin', template_folder='templates')
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
 
 def superuser(f):
     @wraps(f)
@@ -27,13 +20,6 @@ def superuser(f):
                 return redirect(url_for('basic_routes.login'))
         return f(*args, **kwargs)
     return decorated_function
-
-
-def is_safe_url(target):
-    ref_url = urlparse(request.host_url)
-    test_url = urlparse(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
-
 
 @admin_routes.route('/', methods=['GET', 'POST'])
 @superuser
