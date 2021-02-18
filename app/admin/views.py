@@ -4,7 +4,7 @@ from flask import Blueprint, redirect, render_template, request, url_for, sessio
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
-from app.models import db, User, Project
+from app.models import db, User, Project, Tag
 
 from app.forms import AddProjectForm
 
@@ -20,6 +20,7 @@ def superuser(f):
                 return redirect(url_for('basic_routes.login'))
         return f(*args, **kwargs)
     return decorated_function
+
 
 @admin_routes.route('/', methods=['GET', 'POST'])
 @superuser
@@ -40,16 +41,17 @@ def cms():
 @superuser
 def add_project():
     form = AddProjectForm()
-    if form.validate_on_submit():
-        pr_img = form.pr_img.data
-        name = form.name.data
-        short_desc = form.short_desc.data
-        # tags = form.tags.data
-        long_desc = form.long_desc.data
-        live_anchor = form.live_anchor.data
-        github_anchor = form.github_anchor.data
+    if request.method == 'POST':
+        pr_img = request.form.get('pr_img')
+        name = request.form.get('name')
+        short_desc = request.form.get('short_desc')
+        tags = request.form.get('tags')
+        long_desc = request.form.get('long_desc')
+        live_anchor = request.form.get('live_anchor')
+        github_anchor = request.form.get('github_anchor')
 
         new_project = Project(name, pr_img, short_desc, long_desc, live_anchor, github_anchor)
+        new_project.tags.extend(tags)
         db.session.add(new_project)
         db.session.commit()
         flash(f'Project {name} was successfully added!', category='info')
@@ -61,20 +63,28 @@ def add_project():
 @admin_routes.route('/<int:project_id>', methods=['GET', 'POST'])
 @superuser
 def edit_project(project_id):
-    if request.method == 'GET':
-        project_to_update = Project.query.get(project_id)
-        form = AddProjectForm(obj=project_to_update)
-    elif form.validate_on_submit():
+    project_to_update = Project.query.get(project_id)
+    form = AddProjectForm(obj=project_to_update)
+    tags = Tag.query.all()
+    tags_name_list = [tag.name for tag in tags]
+    
+    def find_tag_by_name(lst, search_name):
+        for el in lst:
+            if el.name == search_name:
+                return el
+        return False
+    
+    if form.validate_on_submit():
         project_to_update.pr_img = form.pr_img.data
         project_to_update.name = form.name.data
         project_to_update.short_desc = form.short_desc.data
-        # project_to_update.stack = form.stack.data
+        project_to_update.tags = [find_tag_by_name(tags, el) for el in form.tags.data if el in tags_name_list]
         project_to_update.long_desc = form.long_desc.data
         project_to_update.live_anchor = form.live_anchor.data
         project_to_update.github_anchor = form.github_anchor.data
 
         db.session.commit()
-        flash(f'Project {name} was successfully updated!', category='info')
+        flash(f'Project {project_to_update.name} was successfully updated!', category='info')
         return redirect(url_for('admin_routes.cms'))
         
     return render_template('add_project.html', form=form, h4='Edit project', action="Save changes")
