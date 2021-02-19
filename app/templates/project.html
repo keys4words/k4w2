@@ -16,7 +16,7 @@
        {% endfor %}
     </p>
     {% endif %}
-    <div class="my-4">{{ project.long_desc }}</div>
+    <div class="my-4">{{ project.long_desc | safe }}</div>
     {% if project.live_anchor %}
     <p class="text-center"><a href="{{ project.live_anchor }}">Live web-site</a></p>
     {% endif %}
