@@ -11,6 +11,15 @@ from app.forms import AddProjectForm
 
 admin_routes = Blueprint('admin_routes', __name__, url_prefix='/admin', template_folder='templates')
 
+
+
+def find_tag_by_name(lst, search_name):
+        for el in lst:
+            if el.name == search_name:
+                return el
+        return False
+
+
 def superuser(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -45,13 +54,20 @@ def add_project():
         pr_img = request.form.get('pr_img')
         name = request.form.get('name')
         short_desc = request.form.get('short_desc')
-        tags = request.form.get('tags')
+        tags_from_form = request.form.get('tags')
+        
+        all_tags = Tag.query.all()
+        tags_name_list = [tag.name for tag in all_tags]
+
+        real_tags = [find_tag_by_name(all_tags, el) for el in tags_from_form if el in tags_name_list]
+
         long_desc = request.form.get('long_desc')
         live_anchor = request.form.get('live_anchor')
         github_anchor = request.form.get('github_anchor')
 
+
         new_project = Project(name, pr_img, short_desc, long_desc, live_anchor, github_anchor)
-        new_project.tags.extend(tags)
+        new_project.tags.extend(real_tags)
         db.session.add(new_project)
         db.session.commit()
         flash(f'Project {name} was successfully added!', category='info')
@@ -67,12 +83,6 @@ def edit_project(project_id):
     form = AddProjectForm(obj=project_to_update)
     tags = Tag.query.all()
     tags_name_list = [tag.name for tag in tags]
-    
-    def find_tag_by_name(lst, search_name):
-        for el in lst:
-            if el.name == search_name:
-                return el
-        return False
     
     if form.validate_on_submit():
         project_to_update.pr_img = form.pr_img.data
