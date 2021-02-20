@@ -1,3 +1,4 @@
+import random
 from functools import wraps
 
 from flask import Blueprint, redirect, render_template, request, url_for, session, flash
@@ -46,25 +47,27 @@ def cms():
     return render_template('cms.html', projects=projects)
 
 
-@admin_routes.route('/add', methods=['GET', 'POST'])
+@admin_routes.route('/addproject', methods=['GET', 'POST'])
 @superuser
 def add_project():
     form = AddProjectForm()
     if request.method == 'POST':
+        print('in add_project POST method')
         pr_img = request.form.get('pr_img')
         name = request.form.get('name')
         short_desc = request.form.get('short_desc')
         tags_from_form = request.form.get('tags')
-        
         all_tags = Tag.query.all()
         tags_name_list = [tag.name for tag in all_tags]
+        
+        if tags_from_form is None:
+            tags_from_form = tags_name_list
 
         real_tags = [find_tag_by_name(all_tags, el) for el in tags_from_form if el in tags_name_list]
 
         long_desc = request.form.get('long_desc')
         live_anchor = request.form.get('live_anchor')
         github_anchor = request.form.get('github_anchor')
-
 
         new_project = Project(name, pr_img, short_desc, long_desc, live_anchor, github_anchor)
         new_project.tags.extend(real_tags)
@@ -98,3 +101,14 @@ def edit_project(project_id):
         return redirect(url_for('admin_routes.cms'))
         
     return render_template('add_project.html', form=form, h4='Edit project', action="Save changes")
+
+
+@admin_routes.route('/addtag/<tag_name>')
+@superuser
+def add_tag(tag_name):
+    bg_list = ['primary', 'secondary', 'warning', 'danger', 'success', 'info', 'light', 'dark']
+    new_tag = Tag(name=tag_name, bg=random.choice(bg_list))
+    db.session.add(new_tag)
+    db.session.commit()
+    flash(f'Tag {tag_name} was successfully added!', category='info')
+    return redirect(url_for('admin_routes.cms'))

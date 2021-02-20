@@ -32,8 +32,8 @@
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <input type="text" id="new_tag" class="form-control" placeholder="Add new tag">
-                            <button type="button" id="btn_new_tag" class="btn btn-primary mt-3 btn-block">Add new tag</button>
+                            <input type="text" id="newTagInput" class="form-control" placeholder="Add new tag">
+                            <a class="btn btn-primary mt-3 btn-block" id="AddTag">Add new tag</a>
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                 <div class="form-group">
                     {{ form.github_anchor(class_="form-control", placeholder="Github anchor") | safe }}
                 </div>
-                <button class="btn btn-primary btn-block" type="submit">{{ action }}</button>
+                <button class="btn btn-primary btn-block" type="submit" id="projectBtn">{{ action }}</button>
             </form>
         </div>
     </section>

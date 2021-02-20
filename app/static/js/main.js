@@ -120,7 +120,7 @@ $(document).ready(function() {
 });
 
 // init on DOM loaded
-document.addEventListener("DOMContentLoaded", init);
+//document.addEventListener("DOMContentLoaded", init);
 
 // init app
 function init() {
@@ -130,3 +130,7 @@ function init() {
   new TypeWriter(txtElement, words, wait);
 }
 
+$('#AddTag').click(function() {
+  let newTagName = $('#newTagInput').val()
+  window.location.href="/admin/addtag/"+newTagName
+})
