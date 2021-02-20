@@ -3,6 +3,7 @@ from flask_login import LoginManager, current_user, login_required, login_user, 
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
 from app.models import User, Project, Tag
+from app.forms import SimpleForm
 
 
 basic_routes = Blueprint('basic_routes', __name__)
@@ -64,3 +65,15 @@ def logout():
     logout_user()
     flash('You logged out!', category='info')
     return redirect(url_for('basic_routes.home'))
+
+
+@basic_routes.route('/form',methods=['post','get'])
+def hello_world():
+    form = SimpleForm()
+    if form.validate_on_submit():
+        print(form.example.data)
+        return render_template("success.html", data=form.example.data)
+    else:
+        print("Validation Failed")
+        print(form.errors)
+    return render_template('example.html',form=form)

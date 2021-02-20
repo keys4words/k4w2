@@ -50,15 +50,15 @@
 // };
 
 // // init on DOM loaded
-// document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", init);
 
-// // init app
-// function init() {
-//   const txtElement = document.querySelector(".txt-type");
-//   const words = JSON.parse(txtElement.getAttribute("data-words"));
-//   const wait = txtElement.getAttribute("data-wait");
-//   new TypeWriter(txtElement, words, wait);
-// }
+// init app
+function init() {
+  const txtElement = document.querySelector(".txt-type");
+  const words = JSON.parse(txtElement.getAttribute("data-words"));
+  const wait = txtElement.getAttribute("data-wait");
+  new TypeWriter(txtElement, words, wait);
+}
 
 // ES6 class
 class TypeWriter {
