@@ -9,6 +9,11 @@ from app.forms import SimpleForm
 basic_routes = Blueprint('basic_routes', __name__)
 
 
+def check_tags(filter, project):
+    tags = [str(tag) for tag in project.tags]
+    return (filter in tags)
+
+
 @basic_routes.route('/')
 def home():
     return render_template('home.html')
@@ -34,7 +39,7 @@ def login():
                         next_page = request.args.get('next')
                         if next_page:
                             return redirect(next_page)
-                        return redirect(url_for('basic_routes.projects'))
+                        return redirect(url_for('basic_routes.projects', filter='All'))
                 else:
                     flash('Wrong password!', category='danger')
             else:
@@ -45,14 +50,16 @@ def login():
     return render_template('login.html')
     
 
-@basic_routes.route('/projects')
-def projects():
+@basic_routes.route('/projects/<filter>')
+def projects(filter):
     projects = Project.query.all()
+    if filter != 'All':
+        projects = [project for project in projects if check_tags(filter, project)]
     tags = Tag.query.all()
     return render_template('projects.html', projects=projects, tags=tags)
 
 
-@basic_routes.route('/projects/<int:id>')
+@basic_routes.route('/project/<int:id>')
 @login_required
 def project(id):
     project = Project.query.filter_by(id=id).first()

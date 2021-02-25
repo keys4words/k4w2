@@ -134,3 +134,8 @@ $('#AddTag').click(function() {
   let newTagName = $('#newTagInput').val()
   window.location.href="/admin/addtag/"+newTagName
 })
+
+const filter_menu = $('#filter-menu > a').click(function(e){
+  let filter = e.target.innerText
+  window.location.href="/projects/"+filter
+})

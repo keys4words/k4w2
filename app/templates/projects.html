@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <h4 class="card-title">{{ project.name }}</h4>
                         {% if project.tags %}
-                        <p class=card-text">
+                        <p class="card-text">
                             {% for tag in project.tags %}
                                 <span class="mr-2 badge badge-pill badge-{{ tag.bg }}">{{ tag.name }}</span>
                             {% endfor %}
