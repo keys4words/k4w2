@@ -132,6 +132,7 @@ function init() {
 
 $('#AddTag').click(function() {
   let newTagName = $('#newTagInput').val()
+  let newTagBg = $('#newTagBg').val()
   window.location.href="/admin/addtag/"+newTagName
 })
 

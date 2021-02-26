@@ -20,7 +20,7 @@
                         {% if project.tags %}
                         <p class="card-text">
                             {% for tag in project.tags %}
-                                <span class="mr-2 badge badge-pill badge-{{ tag.bg }}">{{ tag.name }}</span>
+                                <span class="mr-2 badge badge-pill text-white" style="background-color: {{ tag.bg }};">{{ tag.name }}</span>
                             {% endfor %}
                         {% endif %}
                             <p class="card-text">{{ project.short_desc }}</p>

@@ -35,7 +35,7 @@
                   <td>{{ (project.id) }}</td>
                   <td>{{ project.name }}</td>
                   <td>{% for tag in project.tags %}
-                        <span class="mr-2 badge badge-pill badge-{{ tag.bg }}">{{ tag.name }}</span>
+                        <span class="mr-2 badge badge-pill text-white" style="background-color: {{ tag.bg }};">{{ tag.name }}</span>
                       {% endfor %}
                   </td>
                   <td>
