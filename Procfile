@@ -1,1 +1,1 @@
-web: gunicorn wsgi.py:k4w
+web: gunicorn wsgi:k4w
