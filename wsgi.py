@@ -1,5 +1,7 @@
 from app import create_app
 
+k4w = create_app()
 
-app.create_app()
-# app.run()
+
+if __name__ == '__main__':
+    k4w.run()
