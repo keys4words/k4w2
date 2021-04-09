@@ -122,14 +122,29 @@ social a:hover > img{
     h1 {
         font-size: 3rem;
     }
+    
+    .single_post {
+        width: 100%;
+    }
 }
 
 @media(max-width: 500px) {
+    .index-block {
+        margin-top: 20vh;
+    }
     h1 {
         font-size: 2.5rem;
     }
 
-    h2 {
+    h2, .display-3 {
+        font-size: 2rem;
+    }
+
+    .subheader, .display-4 {
         font-size: 1.5rem;
     }
+    .single_post {
+        width: 100%;
+    }
+
 }
